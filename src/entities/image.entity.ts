@@ -1,11 +1,11 @@
-import { Column, Entity, ManyToOne, PrimaryGeneratedColumn } from "typeorm";
+import { Column, Entity, ManyToOne, PrimaryColumn } from "typeorm";
 import { Product } from "./product.entity";
 
-@Entity("images")
+@Entity()
 
 export class Image {
-    @PrimaryGeneratedColumn("uuid")
-    imageUuid?: string 
+    @PrimaryColumn("uuid")
+    readonly id: string 
 
     @Column({ unique: true })
     filename: string 

@@ -1,12 +1,12 @@
-import { Column, Entity, ManyToOne, OneToMany, PrimaryGeneratedColumn } from "typeorm";
+import { Column, Entity, ManyToOne, OneToMany, PrimaryColumn } from "typeorm";
 import { Image } from "./image.entity";
 import { User } from "./user.entity";
 
-@Entity("products")
+@Entity()
 
 export class Product {
-    @PrimaryGeneratedColumn("uuid")
-    productUuid?: string 
+    @PrimaryColumn("uuid")
+    readonly id: string 
 
     @Column()
     name: string 

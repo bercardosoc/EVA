@@ -1,12 +1,12 @@
-import { compare } from "bcrypt";
-import { Column, Entity, OneToMany, PrimaryGeneratedColumn } from "typeorm";
+import { v4 as uuid } from "uuid"
+import { Column, Entity, OneToMany, PrimaryColumn } from "typeorm";
 import { Product } from "./product.entity";
 
-@Entity("users")
+@Entity()
 
 export class User {
-    @PrimaryGeneratedColumn("uuid")
-    userUuid?: string
+    @PrimaryColumn("uuid")
+    readonly id: string
 
     @Column({ unique: true })
     email: string 
@@ -17,10 +17,12 @@ export class User {
     @Column()
     password: string 
 
-    @OneToMany(() => Product, (product) => product.owner, { eager: true })
+    @OneToMany(() => Product, (product) => product.owner)
     products: Product[]
 
-    comparePwd = async (pwdString: string): Promise<boolean> => {
-        return await compare(pwdString, this.password)
+    constructor() {
+        if (!this.id) {
+            this.id = uuid();
+        }
     }
 }
