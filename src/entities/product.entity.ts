@@ -1,6 +1,6 @@
-import { Column, Entity, ManyToOne, OneToMany, PrimaryColumn } from "typeorm";
-import { Image } from "./image.entity";
+import { Column, Entity, ManyToOne, PrimaryColumn } from "typeorm";
 import { User } from "./user.entity";
+import { v4 as uuid } from "uuid"
 
 @Entity()
 
@@ -17,10 +17,16 @@ export class Product {
     @Column()
     price: number 
 
-    @OneToMany(() => Image, (images) => images.product, { eager: true })
-    images: Image[]
+    /* @OneToMany(() => Image, (images) => images.product, { eager: true })
+    images: Image[] */
 
     @ManyToOne(() => User, (user) => user.products)
     owner: User
+
+    constructor() {
+        if (!this.id) {
+            this.id = uuid();
+        }
+    }
 
 }
