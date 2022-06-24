@@ -13,6 +13,12 @@ export class Image {
     @Column()
     filepath: string 
 
+    @Column()
+    mimetype: string 
+
+    @Column()
+    size: number
+
     @ManyToOne(() => Product, (product) => product.images)
     product: Product
 }
