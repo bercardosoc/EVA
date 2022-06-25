@@ -17,9 +17,6 @@ export class Product {
     @Column()
     price: number 
 
-    /* @OneToMany(() => Image, (images) => images.product, { eager: true })
-    images: Image[] */
-
     @ManyToOne(() => User, (user) => user.products)
     owner: User
 

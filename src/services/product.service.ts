@@ -3,12 +3,11 @@ import { AppDataSource } from "../data-source"
 import { Product } from "../entities/product.entity"
 import { User } from "../entities/user.entity"
 import { AppError } from "../errors/appError"
+import { IProductCreate } from "../interfaces/product"
 
-
-export const createProductService = async ({ name, description, price }: any /* tipar aqui */) => {
+export const createProductService = async ({ name, description, price }: IProductCreate, token: any) => {
 
     const productRepository = AppDataSource.getRepository(Product)
-    // const imageRepository = AppDataSource.getRepository(Image)
     
     const productAlreadyExists = await productRepository.findOne({ where: { name }})
 
@@ -16,20 +15,16 @@ export const createProductService = async ({ name, description, price }: any /* 
         throw new AppError(409, "Product already registered")
     }
 
-    /* Criar lógica de adição de imagem */
-
     const userRepository = AppDataSource.getRepository(User)
-    const user: any = await userRepository.findOne({
-        where: { id: "34f740db-2ad5-4b67-bd44-0ddf1667a4d0" }
-        /* Mudar para o id que bem do token */
+    const user: User | null = await userRepository.findOne({
+        where: { id: token.id }
     }) 
 
     const product = new Product()
     product.name = name 
     product.description = description
-    product.price = price 
-    product.owner = user 
-
+    product.price = price
+    if (user !== null) product.owner = user 
 
     productRepository.create(product)
     await productRepository.save(product)

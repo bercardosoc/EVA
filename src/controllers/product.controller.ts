@@ -1,15 +1,15 @@
 import { Request, Response } from "express"
 import { AppError, handleError } from "../errors/appError"
 import { createProductService, deleteProductService, getProductsService } from "../services/product.service"
-import jwt from "jsonwebtoken"
 import 'dotenv/config' 
 
 export const createProductController = async (request: Request, response: Response) => {
 
     try {
 
-        const data = request.body    
-        const product: any /* tipar aqui */ = await createProductService(data)
+        const data = request.body  
+        const token = request.headers.authorization
+        const product = await createProductService(data, token)
         return response.status(201).json(product)
 
     } catch (err) {

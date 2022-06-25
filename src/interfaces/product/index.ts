@@ -1,22 +1,12 @@
-interface Image {
-    id: string 
-    filename: string 
-    filepath: string 
-    mimetype: string
-    size: bigint
-}
-
-interface IProductCreate {
+export interface IProductCreate {
     name: string 
     description: string 
     price: number 
-    image: Image[]
 }
 
-interface IProduct {
+export interface IProduct {
     id: string
     name: string 
     description: string 
     price: number 
-    image: Image[]
 }

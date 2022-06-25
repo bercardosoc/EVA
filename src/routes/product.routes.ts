@@ -5,7 +5,7 @@ const routes = Router()
 
 export const productRoutes = () => {
 
-    routes.post("",createProductController)
+    routes.post("", createProductController)
     routes.get("", getProductsController)
     routes.delete("/:id", deleteProductController)
 
