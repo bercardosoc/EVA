@@ -1,6 +1,7 @@
 import { Request } from "express"
 import { Product } from "../entities/product.entity"
 import { User } from "../entities/user.entity"
+import categoryRepository from "../repositories/category.repository"
 import productRepository from "../repositories/product.repository"
 import { createdProductSchema, serializedProductSchema } from "../schemas/product/createProduct.schema"
 import { getProductsSchema } from "../schemas/product/listProducts.schema"
@@ -10,6 +11,12 @@ class ProductsService {
     createProduct = async ({ validated, decoded, }: Request) => {
         
         const newProduct = validated as Product
+
+        const category = await categoryRepository.findOne({
+            name: newProduct.category,
+        })
+
+        newProduct.category = category
         newProduct.owner = decoded as User
 
         const product = await productRepository.save(newProduct)

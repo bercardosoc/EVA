@@ -18,7 +18,6 @@ export const productsRoutes = () => {
     
     routes.get(
         "",
-        validateSchema(getProductsSchema),
         productController.getAll
     )
 

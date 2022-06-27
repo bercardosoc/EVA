@@ -1,5 +1,6 @@
-import { Column, Entity, OneToMany, PrimaryGeneratedColumn } from "typeorm";
+import { Column, Entity, ManyToOne, OneToMany, PrimaryGeneratedColumn } from "typeorm";
 import { Product } from "./product.entity";
+import { User } from "./user.entity";
 
 @Entity()
 
@@ -13,7 +14,10 @@ export class Category {
     @Column()
     description: string
     
-    @OneToMany(() => Product, (product) => product.category)
+    @OneToMany(() => Product, (product) => product.category, { eager: true })
     products: Product[]
+
+    @ManyToOne(() => User, (user) => user.categories)
+    owner: User
 
 }

@@ -6,6 +6,12 @@ export const getProductsSchema = yup.array().of(
         name: yup.string().required(),
         price: yup.string().required(),
         description: yup.string().required(),
+        category: yup.object().shape({
+            name: yup.string().required(),
+          }),
+        owner: yup.object().shape({
+            name: yup.string().required(),
+          }),
     })
 )
 .nullable()
