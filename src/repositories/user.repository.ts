@@ -15,10 +15,7 @@ class UserRepository implements IUserRepo {
         this.userRepo = AppDataSource.getRepository(User);
     }
 
-    save = async (user:User): Promise<User> => {
-        console.log(user)
-        return await this.userRepo.save(user);
-    }
+    save = async (user:User): Promise<User> => await this.userRepo.save(user);
 
     retrieve = async (payload: object) => await this.userRepo.findOneBy({...payload});
 
