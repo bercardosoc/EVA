@@ -5,6 +5,7 @@ import { Product } from "../entities/product.entity";
 interface IProductRepo {
     save: (Product: Partial<Product>) => Promise<Product>;
     all: () => Promise<Product[]>;
+    retrieve: (payload: object) => Promise<Product | null>;
     findOne: (payload: object) => Promise<Product>;
     delete: (id: string) => Promise<DeleteResult>;
   }
@@ -23,6 +24,8 @@ interface IProductRepo {
     findOne = async (payload: object) => {
       return await this.productRepo.findOneBy({ ...payload });
     };
+
+    retrieve = async (payload: object) => await this.productRepo.findOneBy({...payload});
 
     delete = async (id: string): Promise<DeleteResult> => await this.productRepo.delete(id);
   

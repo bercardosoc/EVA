@@ -8,6 +8,7 @@ declare global {
             validated: User | Product
             decoded: Partial<User>
             user: User
+            product: Product
         }
     }
 }

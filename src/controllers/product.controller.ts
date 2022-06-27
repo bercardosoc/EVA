@@ -1,13 +1,27 @@
 import { Request, Response } from "express"
-import productRepository from "../repositories/product.repository"
-import { getProductsSchema } from "../schemas/product/listProducts.schema"
 import productService from "../services/product.service"
 
 class ProductsController {
+
+    createProduct = async (req: Request, res: Response) => {
+
+        console.log(req)
+        const product = await productService.createProduct(req)
+        return res.status(201).json(product)
+    }
     
     getAll = async (_: Request, res: Response) => {
-        const categories = await productService.getAll()
-        return res.status(200).json({ categories })
+
+        const products = await productService.getAll()
+        return res.status(200).json({ products })
+    }
+
+    deleteProduct = async (req: Request, res: Response) => {
+        const productToDelete = await productService.deleteProduct(req)
+
+        productToDelete === null ?
+        res.status(404).json({"error": "Product not found"}) :
+        res.status(200).json("Succefully deleted")
     }
 }
 

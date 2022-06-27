@@ -18,7 +18,7 @@ export class User {
     @Column()
     password: string 
 
-    @OneToMany(() => Product, (product) => product.owner)
+    @OneToMany(() => Product, (product) => product.owner, {eager: true})
     products: Product[]
 
     comparePwd = async (recievedPwd: string): Promise<boolean> => {

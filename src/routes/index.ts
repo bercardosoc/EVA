@@ -1,5 +1,5 @@
 import { Express } from "express";
-import { productsRoutes } from "./product.routes";
+import { productsRoutes } from "./product.router";
 import { userRoutes } from "./user.router";
 
 const registerRouters = (app: Express): void => {
