@@ -1,49 +1,60 @@
-import { AppDataSource } from "../data-source";
+import { hash } from "bcrypt";
+import { Request } from "express";
+import { sign } from "jsonwebtoken";
+import { AssertsShape } from "yup/lib/object";
 import { User } from "../entities/user.entity";
-import { IUserCreate, IUserLogin } from "../interfaces/user";
-import bcrypt from "bcrypt"
-import { AppError } from "../errors/appError";
-import jwt from "jsonwebtoken"
+import userRepository from "../repositories/user.repository";
+import { serializeUserSchema } from "../schemas/user/createUser.schema";
 
-export const userCreateService = async ({ email, name, password }: IUserCreate) => {
+interface ILogin {
+    status: number
+    message: object
+  }
 
-    const userRepository = AppDataSource.getRepository(User)
+class UserService {
 
-    // Verificar se email existe, porém, usar um middleware
-    const users = await userRepository.find()
+    createUser = async ({ validated }: Request): Promise<AssertsShape<any>> => {
+        
+        (validated as User).password = await hash((validated as User).password, 10)
 
-    const emailAlreadyExists = users.find(user => user.email === email)
+        const user: User = await userRepository.save({
+            ...(validated as User)
+        })
 
-    if (emailAlreadyExists) {
+        return await serializeUserSchema.validate(user, {
+            stripUnknown: true
+        })
+      }
 
-        throw new AppError(409, "Email already exists")
-    }
+    loginUser = async ({ validated }: Request): Promise<ILogin> => {
     
-    const user = new User()
-    user.name = name 
-    user.email = email 
-    user.password = bcrypt.hashSync(password, 12)
-
-    userRepository.create(user)
-    await userRepository.save(user)
-
-    return user
+        const user: User = await userRepository.findOne({
+          email: (validated as User).email,
+        })
+    
+        if (!user) {
+          return {
+            status: 401,
+            message: { message: "Invalid credentials" },
+          }
+        }
+    
+        if (!(await user.comparePwd((validated as User).password))) {
+          return {
+            status: 401,
+            message: { message: "Invalid credentials" },
+          }
+        }
+    
+        const token: string = sign({ ...user }, process.env.SECRET_KEY, {
+          expiresIn: process.env.EXPIRES_IN,
+        })
+    
+        return {
+          status: 200,
+          message: { token },
+        }
+      }
 }
 
-export const userLoginService = async ({ email, password }: IUserLogin) => {
-    
-    const userRepository = AppDataSource.getRepository(User)
-    const users = await userRepository.find()
-    const account = users.find(user => user.email === email)
-
-    if(!account) {
-        throw new AppError(404, "Account not found")
-    }
-
-    const token = jwt.sign(
-        { email: email },
-        String(process.env.JTW_SECRET),
-        { expiresIn: "1h" }
-    )
-    return token 
-}
+export default new UserService()

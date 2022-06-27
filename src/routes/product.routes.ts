@@ -1,14 +1,14 @@
 import { Router } from "express"
-import { createProductController, deleteProductController, getProductsController } from "../controllers/product.controller"
-import { authUser } from "../middlewares/authUser.middleware"
+import productController from "../controllers/product.controller"
+import { validateToken } from "../middlewares/validateToken.middleware"
 
 const routes = Router()
 
 export const productRoutes = () => {
 
-    routes.post("", authUser, createProductController)
-    routes.get("", getProductsController)
-    routes.delete("/:id", authUser, deleteProductController)
+    routes.post("", /* validateToken, */ productController.createProduct)
+    routes.get("", productController.listProducts)
+    routes.delete("/:id", validateToken, productController.deleteProduct)
 
     return routes 
 }

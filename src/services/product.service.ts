@@ -1,55 +1,42 @@
 import { Request } from "express"
-import { AppDataSource } from "../data-source"
 import { Product } from "../entities/product.entity"
-import { User } from "../entities/user.entity"
-import { AppError } from "../errors/appError"
-import { IProductCreate } from "../interfaces/product"
+import productRepository from "../repositories/product.repository"
+import { createProductSchema } from "../schemas/product/createProduct.schema"
+import { listProductsSchema } from "../schemas/product/listProducts.schema"
 
-export const createProductService = async ({ name, description, price }: IProductCreate, token: any) => {
+class ProductsService {
 
-    const productRepository = AppDataSource.getRepository(Product)
-    
-    const productAlreadyExists = await productRepository.findOne({ where: { name }})
-
-    if (productAlreadyExists) {
-        throw new AppError(409, "Product already registered")
+    createProduct = async () => {
+        
+        /* const product: Product = await productRepository.save({
+            ...(validated as Product)
+        })
+        return await createProductSchema.validate(product, {
+            stripUnknown: true,
+        }) */
     }
 
-    const userRepository = AppDataSource.getRepository(User)
-    const user: User | null = await userRepository.findOne({
-        where: { id: token.id }
-    }) 
+    listProducts = async () => {
+        
+        const products = await productRepository.all()
 
-    const product = new Product()
-    product.name = name 
-    product.description = description
-    product.price = price
-    if (user !== null) product.owner = user 
+        return await listProductsSchema.validate(products, {
+            stripUnknown: true,
+        })
+    }
 
-    productRepository.create(product)
-    await productRepository.save(product)
+    deleteProduct = async ({ params }: Request) => {
 
-    return product
+        const product: Product | null = await productRepository.findOne({
+            id: params.id
+        })
 
+        if (product === null) return null 
+
+        await productRepository.delete(product.id)
+
+        return true 
+    }
 }
 
-export const getProductsService = async () => {
-
-    const productRepository = AppDataSource.getRepository(Product)
-    const productList = await productRepository.find()
-    return productList
-
-}
-
-export const deleteProductService = async ({ params }: Request) => {
-    
-    const productRepository = AppDataSource.getRepository(Product)
-    
-    const product = await productRepository.findOne({ where: { id: params.id }})
-
-    if (product === null) return null
-
-    await productRepository.delete(product.id)
-
-    return true 
-}
+export default new ProductsService()

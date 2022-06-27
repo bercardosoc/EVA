@@ -1,12 +1,12 @@
 import { Router } from "express"
-import { userCreateController, userLoginController } from "../controllers/user.controller"
+import userController from "../controllers/user.controller"
 
 const routes = Router()
 
 export const userRoutes = () => {
     
-    routes.post("/signup", userCreateController)
-    routes.post("/signin", userLoginController)
+    routes.post("/signup", userController.createUser)
+    routes.post("/signin", userController.loginUser)
 
     return routes
 }

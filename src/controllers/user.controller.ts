@@ -1,35 +1,24 @@
-import { Request, Response } from "express";
-import { AppError, handleError } from "../errors/appError";
-import { userCreateService, userLoginService } from "../services/user.service";
+import { Request, response, Response } from "express"
+import userService from "../services/user.service"
 
-export const userCreateController = async (request: Request, response: Response) => {
-    
-    try {
+class UserController {
 
-        const { name, email, password } = request.body
-        const createdUser = await userCreateService({ name, email, password })
-        return response.status(201).send(createdUser)
-    
-    } catch (err) {
-    
-        if (err instanceof AppError) {
-            handleError(err, response)
+    createUser = async (request: Request, response: Response) => {
+        
+        const user = await userService.createUser(request)
+        return response.status(201).json(user)
+    }
+
+    loginUser = async (request: Request, response: Response) => {
+        
+        try {
+            const { status, message } = await userService.loginUser(request)
+            return response.status(status).json(message)
+        
+        } catch (err) {
+            return response.status(err.statusCode).json(err.message)
         }
     }
 }
 
-export const userLoginController = async (request: Request, response: Response) => {
-    
-    try {
-
-        const { email, password } = request.body
-        const token = await userLoginService({ email, password })
-        return response.status(201).json({ token })
-    
-    } catch (err) {
-    
-        if (err instanceof AppError) {
-            handleError(err, response)
-        }
-    }
-}
+export default new UserController()

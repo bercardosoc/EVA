@@ -1,36 +1,30 @@
-import { Request, Response } from "express"
-import { AppError, handleError } from "../errors/appError"
-import { createProductService, deleteProductService, getProductsService } from "../services/product.service"
-import 'dotenv/config' 
+import { Request, response, Response } from "express"
+import productService from "../services/product.service"
 
-export const createProductController = async (request: Request, response: Response) => {
+class ProductController {
 
-    try {
-
-        const data = request.body  
-        const token = request.headers.authorization
-        const product = await createProductService(data, token)
+    createProduct = async (request: Request, response: Response) => {
+        
+        const product = await productService.createProduct()
         return response.status(201).json(product)
+    
+    }
 
-    } catch (err) {
+    listProducts = async (_: Request, response: Response) => {
 
-        if (err instanceof AppError) {
-            handleError(err, response)
-        }
+        const products = await productService.listProducts()
+        return response.status(200).json({ products })
+    }
+
+    deleteProduct = async (request: Request) => {
+
+        const productToDelete = await productService.deleteProduct(request)
+
+        productToDelete === null ?
+        response.status(404).json({"error": "Product not found"}) :
+        response.status(200).json("Succefully deleted")
+        
     }
 }
 
-export const getProductsController = async (request: Request, response: Response) => {
-
-    const productList: any /* tipar aqui */ = await getProductsService()
-    return response.json(productList)
-}
-
-export const deleteProductController = async (request: Request, response: Response) => {
-    
-    const productToDelete = await deleteProductService(request)
-
-    productToDelete === null ? 
-    response.status(404).json({ "error": "Product not found" }) :
-    response.status(200).json("Sucessfully deleted")
-}
+export default new ProductController()
