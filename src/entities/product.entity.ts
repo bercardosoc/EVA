@@ -1,6 +1,6 @@
 import { Column, Entity, ManyToOne, PrimaryGeneratedColumn } from "typeorm";
 import { User } from "./user.entity";
-import { v4 as uuid } from "uuid"
+import { Category } from "./category.entity";
 
 @Entity()
 
@@ -19,4 +19,7 @@ export class Product {
 
     @ManyToOne(() => User, (user) => user.products)
     owner: User
+
+    @ManyToOne(() => Category, (category) => category.products)
+    category: Category
 }
