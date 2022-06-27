@@ -9,7 +9,7 @@ export const createdProductSchema = yup.object().shape({
 export const serializedProductSchema = yup.object().shape({
     id: yup.string().uuid().required(),
     name: yup.string().required(),
-    price: yup.string().required(),
+    price: yup.number().required(),
     description: yup.string().required(),
     owner: yup.object().shape({
         name: yup.string().required(),
