@@ -1,13 +1,14 @@
 import { Router } from "express"
 import { createProductController, deleteProductController, getProductsController } from "../controllers/product.controller"
+import { authUser } from "../middlewares/authUser.middleware"
 
 const routes = Router()
 
 export const productRoutes = () => {
 
-    routes.post("", createProductController)
+    routes.post("", authUser, createProductController)
     routes.get("", getProductsController)
-    routes.delete("/:id", deleteProductController)
+    routes.delete("/:id", authUser, deleteProductController)
 
     return routes 
 }
