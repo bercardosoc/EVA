@@ -1,12 +1,12 @@
-import { Column, Entity, ManyToOne, PrimaryColumn } from "typeorm";
+import { Column, Entity, ManyToOne, PrimaryGeneratedColumn } from "typeorm";
 import { User } from "./user.entity";
 import { v4 as uuid } from "uuid"
 
 @Entity()
 
 export class Product {
-    @PrimaryColumn("uuid")
-    readonly id: string 
+    @PrimaryGeneratedColumn("uuid")
+    id?: string; 
 
     @Column()
     name: string 
@@ -19,11 +19,4 @@ export class Product {
 
     @ManyToOne(() => User, (user) => user.products)
     owner: User
-
-    constructor() {
-        if (!this.id) {
-            this.id = uuid();
-        }
-    }
-
 }

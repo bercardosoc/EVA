@@ -1,15 +1,15 @@
-import express, { NextFunction, Request, Response } from "express"
-import { errorHandler } from "./errors"
-import { appRoutes } from "./routes"
+import "express-async-errors";
+import express, { NextFunction, Request, Response } from "express";
+import registerRouters from "./routes";
+import { errorHandler } from "./errors/errors";
 
-const app = express()
+const app = express();
 
-app.use(express.json())
-
-appRoutes(app)
+app.use(express.json());
+registerRouters(app);
 
 app.use((err: Error, _: Request, res: Response, __: NextFunction) => {
-    return errorHandler(err, res);
-  });
+  return errorHandler(err, res);
+});
 
-app.listen(3000)
+export default app;

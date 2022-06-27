@@ -1,24 +1,18 @@
-import { Request, response, Response } from "express"
-import userService from "../services/user.service"
+import express, {Request, Response} from 'express';
+import userService from "../services/user.service";
 
 class UserController {
-
-    createUser = async (request: Request, response: Response) => {
-        
-        const user = await userService.createUser(request)
-        return response.status(201).json(user)
-    }
-
-    loginUser = async (request: Request, response: Response) => {
-        
-        try {
-            const { status, message } = await userService.loginUser(request)
-            return response.status(status).json(message)
-        
-        } catch (err) {
-            return response.status(err.statusCode).json(err.message)
-        }
-    }
+    loginUser = async (req: Request, res: Response) => {
+      const { status, message } = await userService.login(req);
+      console.log(status, message);
+      return res.status(status).json(message);
+    };
+  
+    createUser = async (req: Request, res: Response) => {
+      console.log(req.body)
+      const user = await userService.create(req);
+      return res.status(201).json(user);
+    };
 }
 
-export default new UserController()
+export default new UserController();

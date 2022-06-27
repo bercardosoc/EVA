@@ -1,25 +1,20 @@
-import { Request, Response, NextFunction } from "express"
-import { AnySchema } from "yup"
-import { ErrorHandler } from "../errors"
+import { NextFunction, Request, Response } from "express";
+import { AnySchema } from "yup";
 
-export const validateSchemaMiddleware = (shape: AnySchema) => 
-  
-async (request: Request, _: Response, next: NextFunction) => {
-
+export const validateSchema =
+  (shape: AnySchema) =>
+  async (req: Request, res: Response, next: NextFunction) => {
     try {
-
-      const validated = await shape.validate(request.body, {
+      const validated = await shape.validate(req.body, {
         abortEarly: false,
         stripUnknown: true,
-      })
+      });
 
-      request.validated = validated
+      req.validated = validated;
+      console.log(req.validated);
 
-      return next()
-    
+      return next();
     } catch (error) {
-      
-        throw new ErrorHandler(400, { error: error.errors })
-    
+      return res.status(400).json({ message: error.errors });
     }
-  }
+  };

@@ -3,24 +3,28 @@ import { AppDataSource } from "../data-source";
 import { User } from "../entities/user.entity";
 
 interface IUserRepo {
-  save: (user: Partial<User>) => Promise<User>
-  all: () => Promise<User[]>
-  findOne: (payload: object) => Promise<User>
+    save: (user: User) => Promise<User>
+    retrieve: (payload: object) => Promise<User | null>;
+    findOne: (payload: object) => Promise<User | null>;
 }
 
-export class UserRepo implements IUserRepo {
-  private ormRepo: Repository<User>
+class UserRepository implements IUserRepo {
+    private userRepo: Repository<User>;
 
-  constructor() {
-    this.ormRepo = AppDataSource.getRepository(User)
-  }
+    constructor() {
+        this.userRepo = AppDataSource.getRepository(User);
+    }
 
-  save = async (user: Partial<User>) => await this.ormRepo.save(user)
-  all = async () => await this.ormRepo.find()
+    save = async (user:User): Promise<User> => {
+        console.log(user)
+        return await this.userRepo.save(user);
+    }
 
-  findOne = async (payload: object) => {
-    return await this.ormRepo.findOneBy({ ...payload })
-  }
+    retrieve = async (payload: object) => await this.userRepo.findOneBy({...payload});
+
+    findOne = async (payload: object) => {
+        return await this.userRepo.findOneBy({ ...payload });
+      }
 }
 
-export default new UserRepo()
+export default new UserRepository();

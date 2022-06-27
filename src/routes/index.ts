@@ -1,9 +1,10 @@
-import { Express } from "express"
-import { productRoutes } from "./product.routes"
-import { userRoutes } from "./user.routes"
+import { Express } from "express";
+import { userRoutes } from "./user.router";
 
-export const appRoutes = (app: Express) => {
-
+const registerRouters = (app: Express): void => {
     app.use("/users", userRoutes())
-    app.use("/products", productRoutes())
 }
+  
+export default registerRouters;
+
+
