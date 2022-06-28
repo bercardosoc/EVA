@@ -21,6 +21,11 @@ export const productsRoutes = () => {
         productController.getAll
     )
 
+    routes.get(
+        "/:order",
+        productController.getByPrice
+    )
+
     routes.delete(
         "/:id",
         productController.deleteProduct

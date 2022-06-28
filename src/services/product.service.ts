@@ -34,10 +34,22 @@ class ProductsService {
     getAll = async () => {
         
         const products = await productRepository.all()
-        
+
         return await getProductsSchema.validate(products, {
             stripUnknown: true,
         })
+    }
+
+    getByPrice = async ({ params }: Request) => {
+
+        let products
+
+        if (params.order === "menor") products = await productRepository.ascPrice()
+        
+        if (params.order === "maior") products = await productRepository.descPrice()
+
+        return products
+
     }
 
     deleteProduct = async ({ params }: Request) => {

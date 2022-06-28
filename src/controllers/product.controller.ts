@@ -18,6 +18,13 @@ class ProductsController {
         return res.status(200).json({ products })
     }
 
+    getByPrice = async (req: Request, res: Response) => {
+        
+        const products = await productService.getByPrice(req)
+        return res.status(200).json({ products })
+
+    }
+
     deleteProduct = async (req: Request, res: Response) => {
         const productToDelete = await productService.deleteProduct(req)
 
