@@ -120,6 +120,50 @@ Caso tenha dúvidas, basta checar o terminal, a aplicação tem um console.log q
 }
 ```
 
+## Lista de produtos por preço
+
+`GET /products/:maior - FORMATO DA RESPOSTA - STATUS 200`
+
+```json
+{
+	"products": [
+		{
+			"id": "3dd70396-cacd-4417-933c-4642efd46802",
+			"name": "barraca de acampamento",
+			"description": "acampe sem preocupação",
+			"price": 100
+		},
+		{
+			"id": "11b755f2-a4d7-487c-afea-f0863da0b1b9",
+			"name": "patinho de borracha",
+			"description": "o seu melhor amigo para pair coding",
+			"price": 1
+		}
+	]
+}
+```
+
+`GET /products/:menor - FORMATO DA RESPOSTA - STATUS 200`
+
+```json
+{
+	"products": [
+		{
+			"id": "11b755f2-a4d7-487c-afea-f0863da0b1b9",
+			"name": "patinho de borracha",
+			"description": "o seu melhor amigo para pair coding",
+			"price": 1
+		},
+		{
+			"id": "3dd70396-cacd-4417-933c-4642efd46802",
+			"name": "barraca de acampamento",
+			"description": "acampe sem preocupação",
+			"price": 100
+		}
+	]
+}
+```
+
 ## Lista de categorias 
 
 `GET /categories - FORMATO DA RESPOSTA - STATUS 200`

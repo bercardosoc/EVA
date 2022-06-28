@@ -23,11 +23,14 @@ export const categoriesRoutes = () => {
 
     routes.delete(
         "/:id",
+        validateToken,
         categoryController.deleteCategory
     )
 
     routes.patch(
         "/:id",
+        validateToken,
+
         validateSchema(editCategorySchema),
         verifyCategoryExists,
         categoryController.updateCategory
