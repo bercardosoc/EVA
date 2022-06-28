@@ -33,6 +33,7 @@ class CategoriesService {
     getAll = async () => {
         const categories = await categoryRepository.all()
         
+        return categories 
         return await getCategoriesSchema.validate(categories, {
             stripUnknown: true,
         })

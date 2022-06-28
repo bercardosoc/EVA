@@ -1,4 +1,5 @@
 import { Request } from "express"
+import { Category } from "../entities/category.entity"
 import { Product } from "../entities/product.entity"
 import { User } from "../entities/user.entity"
 import categoryRepository from "../repositories/category.repository"
@@ -12,7 +13,7 @@ class ProductsService {
         
         const newProduct = validated as Product
 
-        const category = await categoryRepository.findOne({
+        const category: Category | null = await categoryRepository.findOne({
             name: newProduct.category,
         })
 

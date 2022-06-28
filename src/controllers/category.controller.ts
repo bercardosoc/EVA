@@ -13,7 +13,7 @@ class CategoriesController {
         const chosenCategory = await categoryService.getCategory(req)
 
         chosenCategory === null ?
-        res.status(404).json({"error": "Category not found"}) : 
+        res.status(404).json({"error": "Categoria não encontrada"}) : 
         res.status(201).json( chosenCategory )
     }
 
@@ -27,7 +27,7 @@ class CategoriesController {
         const categoryToUpdate = await categoryService.updateCategory(req)
 
         categoryToUpdate === null ? 
-        res.status(404).json({"error": "Category not found"}) :
+        res.status(404).json({"error": "Categoria não encontrada"}) :
         res.status(200).json(categoryToUpdate)
     }
 
@@ -35,7 +35,7 @@ class CategoriesController {
         const categoryToDelete = await categoryService.deleteCategory(req)
 
         categoryToDelete === null ?
-        res.status(404).json({"error": "Category not found"}) :
+        res.status(404).json({"error": "Categoria não encontrada"}) :
         res.status(200).json("Succefully deleted")
     }
 }
