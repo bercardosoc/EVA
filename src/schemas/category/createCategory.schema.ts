@@ -8,7 +8,6 @@ export const createCategorySchema = yup.object().shape({
 export const serializedCategorySchema = yup.object().shape({
     categoryId: yup.string().uuid().required(),
     name: yup.string().required(),
-    unit: yup.string().required(),
     description: yup.string().required(),
 })
 .nullable()

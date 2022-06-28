@@ -14,7 +14,7 @@ class CategoriesService {
 
         const product = await categoryRepository.save(newCategory)
 
-        return await createCategorySchema.validate(product, {
+        return await serializedCategorySchema.validate(product, {
             stripUnknown: true,
         })
     }
