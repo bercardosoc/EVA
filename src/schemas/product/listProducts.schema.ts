@@ -6,9 +6,6 @@ export const getProductsSchema = yup.array().of(
         name: yup.string(),
         price: yup.number(),
         description: yup.string().required(),
-        category: yup.object().shape({
-          name: yup.string(),
-          }),
     })
     .required()
 )

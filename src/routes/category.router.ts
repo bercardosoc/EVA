@@ -3,7 +3,7 @@ import categoryController from "../controllers/category.controller";
 import { validateSchema } from "../middlewares/validateSchema.middleware";
 import validateToken from "../middlewares/validateToken.middleware";
 import { verifyCategoryExists } from "../middlewares/verifyCategoryExists.middleware";
-import { createCategorySchema, serializedCategorySchema } from "../schemas/category/createCategory.schema";
+import { createCategorySchema, editCategorySchema, serializedCategorySchema } from "../schemas/category/createCategory.schema";
 import { getCategoriesSchema } from "../schemas/category/listCategories.schema";
 
 const routes = Router()
@@ -22,13 +22,14 @@ export const categoriesRoutes = () => {
     )
 
     routes.delete(
-        "/:categoryId",
+        "/:id",
         categoryController.deleteCategory
     )
 
     routes.patch(
-        "/:categoryId",
-        validateSchema(createCategorySchema),
+        "/:id",
+        validateSchema(editCategorySchema),
+        verifyCategoryExists,
         categoryController.updateCategory
     )
 

@@ -40,13 +40,13 @@ class CategoriesService {
 
     updateCategory = async ({ params, body }: Request) => {
         
-        await categoryRepository.update(params.categoryId, {...body})
+        await categoryRepository.update(params.id, {...body})
         
-        const category: Category | null = await categoryRepository.findOne({
-            id: params.id,
+        const categoryToUpdate: Category | null = await categoryRepository.findOne({
+            categoryId: params.id,
         })
         
-        return await createCategorySchema.validate(category, {
+        return await serializedCategorySchema.validate(categoryToUpdate, {
             stripUnknown: true,
         })
     }
@@ -54,7 +54,7 @@ class CategoriesService {
     deleteCategory = async ({ params }: Request) => {
         
         const category: Category | null = await categoryRepository.findOne({
-            id: params.id,
+            categoryId: params.id,
         })
 
         if (category === null) return null

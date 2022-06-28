@@ -13,7 +13,7 @@ export const verifyCategoryExists = async (
     });
   
     if (foundCategory) {
-      throw new ErrorHandler(409, `${(req.validated as Category).name} already exists`)
+      throw new ErrorHandler(409, `A categoria ${(req.validated as Category).name} já existe`)
     }
   
     return next();

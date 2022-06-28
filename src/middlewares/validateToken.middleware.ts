@@ -7,7 +7,7 @@ const validateToken = async (req: Request, res: Response, next: NextFunction) =>
   const token: string = req.headers.authorization?.split(" ")[1];
 
   if (!token) {
-    res.status(400).json({ message: "Missing authorization token." });
+    res.status(400).json({ message: "Necessário token de autorização." });
   }
 
   return verify(

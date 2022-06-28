@@ -63,9 +63,10 @@ Caso tenha dúvidas, basta checar o terminal, a aplicação tem um console.log q
 	"password": "senhaforte"
 }
 ```
+
 `POST /users/signup - FORMATO DA RESPOSTA - STATUS 201`
 
-```json```
+```json
 {
 	"email": "bernardo@mail.com",
 	"name": "Bernardo",
@@ -76,7 +77,7 @@ Caso tenha dúvidas, basta checar o terminal, a aplicação tem um console.log q
 
 `POST /users/signin - FORMATO DA REQUISIÇÃO`
 
-```json```
+```json
 {
 	"email": "bernardo@mail.com",
 	"password": "senhaforte"
@@ -84,7 +85,7 @@ Caso tenha dúvidas, basta checar o terminal, a aplicação tem um console.log q
 ```
 `POST /users/signup - FORMATO DA RESPOSTA - STATUS 200`
 
-```json```
+```json
 {
 	"token": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjU4NThjYmI3LTMxYjEtNDllOC1hNTcyLWVjMjFhOGMzZTc0NCIsImlhdCI6MTY1NjM2OTc0OCwiZXhwIjoxNjU2MzczMzQ4fQ.e2pctoTfPMo4f6ko9eM4aHUhbiQH2ln3Ipy0uj2xG1c"
 }
@@ -176,6 +177,7 @@ Assim, onde estas APIs forem testadas, será necessário adicionar algo como `Au
 }
 ```
 
+
 ### Possíveis erros 
 
 `POST /categories - FORMATO DE RESPOSTA - 409 CONFLICT`
@@ -184,6 +186,60 @@ Assim, onde estas APIs forem testadas, será necessário adicionar algo como `Au
 	"message": "lazer already exists"
 }
 ```
+
+## Edição de categoria 
+
+Você pode passar apenas um dos campos de uma categoria já existente.
+
+`PATCH /categories/:id - FORMATO DE REQUISIÇÃO`
+
+```json
+{
+	"name": "diversão",
+	"description": "as melhores formas de lazer"
+}
+```
+
+`POST /categories - FORMATO DE RESPOSTA - 200 OK`
+
+```json
+{
+	"categoryId": "0ac9cb6b-d8bc-46ba-bc8b-1c6c8e643a8a",
+	"name": "diversão",
+	"description": "as melhores formas de lazer"
+}
+```
+
+### Possíveis erros 
+
+`PATCH /categories/:id - FORMATO DE REQUISIÇÃO`
+
+```json
+{
+	"name": "roupa",
+	"description": "as melhores roupas por um preço que cabe no seu bolso"
+}
+```
+
+`POST /categories/:id - FORMATO DE RESPOSTA - 409 CONFLICT`
+
+```json
+{
+	"message": "A categoria roupa já existe"
+}
+```
+
+## Deleção de uma categoria 
+
+`DELETE /categories/:id`
+
+`Não é necessário corpo de requisição`
+
+`DELETE /categories/:id - FORMATO DE RESPOSTA - 200 OK`
+
+`Deletado com sucesso!`
+
+
 
 ## Criação de um produto
 

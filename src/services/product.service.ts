@@ -26,9 +26,6 @@ class ProductsService {
 
         return product 
         
-        // return await createdProductSchema.validate(product, {
-        //     stripUnknown: true,
-        // })
     }
 
     getAll = async () => {
@@ -48,7 +45,9 @@ class ProductsService {
         
         if (params.order === "maior") products = await productRepository.descPrice()
 
-        return products
+        return await getProductsSchema.validate(products, {
+            stripUnknown: true,
+        })
 
     }
 
