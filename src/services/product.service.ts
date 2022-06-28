@@ -16,17 +16,23 @@ class ProductsService {
             name: newProduct.category,
         })
 
+        if (category === null) return null
+
         newProduct.category = category
+
         newProduct.owner = decoded as User
 
         const product = await productRepository.save(newProduct)
 
-        return await createdProductSchema.validate(product, {
-            stripUnknown: true,
-        })
+        return product 
+        
+        // return await createdProductSchema.validate(product, {
+        //     stripUnknown: true,
+        // })
     }
 
     getAll = async () => {
+        
         const products = await productRepository.all()
         
         return await getProductsSchema.validate(products, {

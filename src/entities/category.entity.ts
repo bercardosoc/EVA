@@ -14,7 +14,7 @@ export class Category {
     @Column()
     description: string
     
-    @OneToMany(() => Product, (product) => product.category, { eager: true })
+    @OneToMany(() => Product, (product) => product.category)
     products: Product[]
 
     @ManyToOne(() => User, (user) => user.categories)

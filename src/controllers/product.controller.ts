@@ -5,9 +5,11 @@ class ProductsController {
 
     createProduct = async (req: Request, res: Response) => {
 
-        console.log(req)
         const product = await productService.createProduct(req)
-        return res.status(201).json(product)
+
+        product === null ?
+        res.status(400).json({"error": "Não há categoria criada para este produto."}) :
+        res.status(201).json(product)
     }
     
     getAll = async (_: Request, res: Response) => {

@@ -17,7 +17,7 @@ export class Product {
     @Column()
     price: number 
 
-    @ManyToOne(() => User, (user) => user.products)
+    @ManyToOne(() => User, (user) => user.products, { lazy: true })
     owner: User
 
     @ManyToOne(() => Category, (category) => category.products)
