@@ -166,6 +166,8 @@ Caso tenha dúvidas, basta checar o terminal, a aplicação tem um console.log q
 
 ## Lista de categorias 
 
+Esta é uma rota que além de retornar as categorias propriamente ditas, também tem a importância de trazer os produtos por categoria. 
+
 `GET /categories - FORMATO DA RESPOSTA - STATUS 200`
 
 ```json 
@@ -173,23 +175,75 @@ Caso tenha dúvidas, basta checar o terminal, a aplicação tem um console.log q
 {
 	"categories": [
 		{
-			"categoryId": "d5b6043c-fab5-432f-82e9-abfe094d44dc",
-			"name": "roupa",
-			"description": "as melhores roupas por um preço que cabe no seu bolso"
+			"categoryId": "2f397495-1c59-4506-b803-bc1fb86e10f0",
+			"name": "lazer",
+			"description": "os melhores produtos de lazer",
+			"products": [
+				{
+					"id": "b52ffdaf-0f64-4158-b123-e28a886249a5",
+					"name": "barraca de acampamento",
+					"description": "acampe sem preocupação",
+					"price": 100
+				}
+			]
 		},
 		{
-			"categoryId": "96fd2616-8bb3-4e0e-bf8a-4a3c0b9fa430",
-			"name": "celular",
-			"description": "os melhores celulares por um preço que cabe no seu bolso"
-		},
-		{
-			"categoryId": "ac4aa0f1-b3a5-41ca-adf4-f923fdfe44b8",
+			"categoryId": "ea6294fe-3bd3-4603-91d2-45c7f1bd68ab",
 			"name": "decoração",
-			"description": "as melhores decorações de casa por um preço que cabe no seu bolso"
+			"description": "os melhores produtos de decoração",
+			"products": [
+				{
+					"id": "c4333adc-b1c6-4217-92a4-7c25ec57d632",
+					"name": "patinho de borracha",
+					"description": "seu melhor amigo de pair coding",
+					"price": 1
+				}
+			]
 		}
 	]
 }
 
+```
+
+## Única categoria
+
+Nesta opção, é possível selecionar uma única categoria, o que facilita a leitura do seu array de produtos.
+
+`GET /categories/:name - FORMATO DA RESPOSTA - STATUS 200`
+
+```json
+{
+	"products": [
+		{
+			"description": "acampe sem preocupação",
+			"price": 100,
+			"name": "barraca de acampamento"
+		},
+		{
+			"description": "seu melhor amigo de pair coding",
+			"price": 1,
+			"name": "patinho de borracha"
+		},
+		{
+			"description": "seu melhor amigo de pair coding",
+			"price": 1,
+			"name": "gatinho de borracha"
+		}
+	],
+	"description": "os melhores produtos de lazer",
+	"name": "lazer",
+	"categoryId": "2f397495-1c59-4506-b803-bc1fb86e10f0"
+}
+```
+
+### Possíveis erros 
+
+`GET /categories/:name - FORMATO DA RESPOSTA - NOT FOUND 404`
+
+```json
+{
+	"error": "Categoria não encontrada"
+}
 ```
 
 ### Rotas com autenticação
