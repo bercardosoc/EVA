@@ -1,11 +1,12 @@
 # Teste Eva Commerce
 
-Este é um back-end que desenvolve uma API para que os usuários possam cadastrar produtos acrescentando seus preços e descrições. Criado na linguagem TypeScript, com o framework Node, utiliza TypeORM e PostGresql nos bancos de dados e seus relacionamentos. Também foram utilizadas bibliotecas como uuid, yup, jwt, e bcrypt. 
+Este é um back-end que desenvolve uma API para que os usuários possam cadastrar produtos acrescentando seus names, preços e descrições, dentro de alguma categoria existente. O usuário também pode cadastrar as suas categorias. 
 
+Criado na linguagem TypeScript, com o framework Node, utiliza TypeORM e PostGresql nos bancos de dados e seus relacionamentos. Também foram utilizadas bibliotecas como uuid, yup, jwt, e bcrypt. 
 
 ## Como rodar esta aplicação?
 
-Para utilizá-la na sua máquina, basta seguir algum dos passos a seguir:
+Para utilizá-la na sua máquina, basta seguir os passos a seguir:
 
 ### 1) Primeira opção - Baixar o arquivo em zip
 
@@ -25,11 +26,11 @@ Assim, você pode entrar na pasta agora disponível.
 
 ### 2) Instale as dependências
 
-Logo, acesse o terminal e rode `yarn` ou `npm install` para que sejam baixadas as dependências da aplicação em `node_modules`. Este processo pode ser um pouco demorado.
+Logo, acesse o terminal e rode `yarn` ou `npm install` para que sejam baixadas as dependências da aplicação como `node_modules`. Este processo pode ser um pouco demorado.
 
 ### 3) Abra a aplicação no seu editor de código
 
-Para usuários de VS Code, basta rodar um simples `code .` dentro da mesma pasta e assim você poderá fazer o que deseja na aplicação.
+Para usuários de VS Code, basta rodar um simples `code .` dentro do terminal no mesmo diretório/pasta e assim você poderá fazer o que deseja na aplicação.
 
 ### 4) Pré-requisitos para rodar a aplicação
 
@@ -37,7 +38,7 @@ Para que ela funcione corretamente, necessita configurar as variáveis de ambien
 
 Quando suas variáveis estiverem prontas, você pode rodar as migrations para que estas se integrem com o seu banco de dados local. Para isso, basta rodar:
 
-```shel
+```shell
 yarn typeorm migration:run -d src/data-source.ts
 ```
 
@@ -81,7 +82,7 @@ Caso tenha dúvidas, basta checar o terminal, a aplicação tem um console.log q
 	"password": "senhaforte"
 }
 ```
-`POST /users/signup - FORMATO DA RESPOSTA - STATUS 201`
+`POST /users/signup - FORMATO DA RESPOSTA - STATUS 200`
 
 ```json```
 {
@@ -91,7 +92,7 @@ Caso tenha dúvidas, basta checar o terminal, a aplicação tem um console.log q
 
 ## Lista de produtos 
 
-`GET /products - FORMATO DA RESPOSTA`
+`GET /products - FORMATO DA RESPOSTA - STATUS 200`
 
 ```json
 {
@@ -118,42 +119,132 @@ Caso tenha dúvidas, basta checar o terminal, a aplicação tem um console.log q
 }
 ```
 
-### Rotas sem autenticação
+## Lista de categorias 
+
+`GET /categories - FORMATO DA RESPOSTA - STATUS 200`
+
+```json 
+
+{
+	"categories": [
+		{
+			"categoryId": "d5b6043c-fab5-432f-82e9-abfe094d44dc",
+			"name": "roupa",
+			"description": "as melhores roupas por um preço que cabe no seu bolso"
+		},
+		{
+			"categoryId": "96fd2616-8bb3-4e0e-bf8a-4a3c0b9fa430",
+			"name": "celular",
+			"description": "os melhores celulares por um preço que cabe no seu bolso"
+		},
+		{
+			"categoryId": "ac4aa0f1-b3a5-41ca-adf4-f923fdfe44b8",
+			"name": "decoração",
+			"description": "as melhores decorações de casa por um preço que cabe no seu bolso"
+		}
+	]
+}
+
+```
+
+### Rotas com autenticação
 
 São rotas onde é necessário o login do usuário, cujo token de acesso irá disponibilizar informações, como o seu id, para que assim possa ser atribuído como criador.
 
 Assim, onde estas APIs forem testadas, será necessário adicionar algo como `Authorization: Bearer {token}` no cabeçalho da requisição.
 
-## Criação de um produto
+## Criação de uma categoria
 
-`POST /products - FORMATO DE REQUISIÇÃO
+`POST /categories - FORMATO DE REQUISIÇÃO`
+
+```json
+
+{
+	"name": "lazer",
+	"description": "os melhores produtos de lazer"
+}
+
+```
+
+`POST /categories - FORMATO DE RESPOSTA - 201 CREATED`
 
 ```json
 {
-	"name": "Patinho de borracha",
-	"price": 5,
-	"description": "Um objeto para decoração."
+	"description": "os melhores produtos de lazer",
+	"name": "lazer",
+	"categoryId": "0ac9cb6b-d8bc-46ba-bc8b-1c6c8e643a8a"
+}
+```
+
+### Possíveis erros 
+
+`POST /categories - FORMATO DE RESPOSTA - 409 CONFLICT`
+```json
+{
+	"message": "lazer already exists"
+}
+```
+
+## Criação de um produto
+
+`POST /products - FORMATO DE REQUISIÇÃO`
+
+```json
+{
+	"name": "patinho de borracha",
+	"price": 1,
+	"description": "o seu melhor amigo para pair coding",
+	"category": "decoração"
 }
 ```
 `POST /products - FORMATO DE RESPOSTA - 201 CREATED`
 
 ```json
 {
-	"description": "Um objeto para decoração.",
-	"price": 5,
-	"name": "Patinho de borracha"
+	"description": "o seu melhor amigo para pair coding",
+	"price": 1,
+	"name": "patinho de borracha",
+	"category": {
+		"categoryId": "d5b6043c-fab5-432f-82e9-abfe094d44dc",
+		"name": "roupa",
+		"description": "as melhores roupas por um preço que cabe no seu bolso"
+	},
+	"owner": {
+		"id": "a4a20853-ee10-4f80-bee6-2eede6d51c06",
+		"iat": 1656424429,
+		"exp": 1656428029
+	},
+	"id": "11b755f2-a4d7-487c-afea-f0863da0b1b9"
 }
 ```
+
+### Possíveis erros 
+
+`POST /products - FORMATO DE REQUISIÇÃO
+
+```json
+{
+	"name": "barraca de acampamento",
+	"price": 100,
+	"description": "acampe sem preocupação",
+	"category": "lazer"
+}
+```
+
+`POST /products - FORMATO DE RESPOSTA - 400 BAD REQUEST`
+
+```json
+{
+	"message": "A categoria lazer não existe"
+}
+```
+
 ## Deleção de um produto 
 
 `DELETE /products/:id`
 
-```json
-Não é necessário corpo de requisição
-```
+`Não é necessário corpo de requisição`
 
 `DELETE /products/:id - FORMATO DE RESPOSTA - 200 OK`
 
-```json
-Deletado com sucesso!
-```
+`Deletado com sucesso!`
