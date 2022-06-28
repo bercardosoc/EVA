@@ -2,6 +2,7 @@ import { Router } from "express";
 import categoryController from "../controllers/category.controller";
 import { validateSchema } from "../middlewares/validateSchema.middleware";
 import validateToken from "../middlewares/validateToken.middleware";
+import { verifyCategoryExists } from "../middlewares/verifyCategoryExists.middleware";
 import { createCategorySchema } from "../schemas/category/createCategory.schema";
 import { getCategoriesSchema } from "../schemas/category/listCategories.schema";
 
@@ -35,6 +36,7 @@ export const categoriesRoutes = () => {
         "",
         validateToken,
         validateSchema(createCategorySchema),
+        verifyCategoryExists,
         categoryController.createCategory
     )
 
